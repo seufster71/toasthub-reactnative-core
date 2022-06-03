@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { StyleSheet, View, Text } from 'react-native';
 
 const SelectMultipleInput = ({itemState, name, label, defaultOption, value, rendered, required, inputChange, onBlur, options, wrapperClass, inline}) => {
+
+	const [open, setOpen] = false;
+	const setValue = inputChange;
+	const items = options;
+	const setItems = null;
 
 	if (wrapperClass == null) {
 		wrapperClass = 'form-group';
@@ -13,24 +19,24 @@ const SelectMultipleInput = ({itemState, name, label, defaultOption, value, rend
 		inline = false;
 	}
 	
-	let errorLabel = '';
-	let errorFeedBack = '';
+	let errorLabel = null;
+	let errorFeedBack = null;
 	if (itemState != null && itemState.errors != null && itemState.errors[name] != null && itemState.errors[name] != "") {
 		wrapperClass += " " + 'has-error has-feedback';
 		errorFeedBack = <span className="glyphicon glyphicon-remove form-control-feedback"/>;
 		errorLabel = <div id={name + "-error"} className="control-label has-error" >{itemState.errors[name]}</div>;
 	}
 	
-	let warnLabel = '';
-	let warnFeedBack = '';
+	let warnLabel = null;
+	let warnFeedBack = null;
 	if (itemState != null && itemState.warns != null && itemState.warns[name] != null && itemState.warns[name] > 0) {
 		wrapperClass += " " + 'has-error has-feedback';
 		warnFeedBack = <span className="glyphicon glyphicon-remove form-control-feedback"/>;
 		warnLabel = <label id={name + "-warn"} className="control-label has-warn" htmlFor={name}>{itemState.warns[name]}</label>;
 	}
 			
-	let successLabel = '';
-	let successFeedBack = '';
+	let successLabel = null;
+	let successFeedBack = null;
 	if (itemState != null && itemState.successes != null && itemState.successes[name] > 0) {
 		wrapperClass += " " + 'has-error has-feedback';
 		successFeedBack = <span className="glyphicon glyphicon-remove form-control-feedback"/>;
@@ -55,39 +61,55 @@ const SelectMultipleInput = ({itemState, name, label, defaultOption, value, rend
 	if (rendered) {
 		if (inline) {
 			return (
-				<div className={wrapperClass}>
-					<div className="row">
-						<div className="col-md-3">
-							{label}{req}
-						</div>
-						<div className="col-md-9">
-							<Select id="multiSelect" name={name} defaultValue={defaultOption} isMulti onChange={(e) => inputChange(name,e)} options={options}/>
-						</div>
-					</div>
+				<View>
+					<Text>{label}{req}</Text>
+					<DropDownPicker 
+						open={open} 
+						value={value} 
+						items={items}
+						setOpen={setOpen}
+						setValue={setValue}
+						setItems={setItems}
+						theme={theme}
+						multiple={true}
+						mode="BADGE"
+						badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
+					/>
 					{errorFeedBack}
 					{errorLabel}
 					{warnFeedBack}
 					{warnLabel}
 					{successFeedBack}
 					{successLabel}
-				</div>
+				</View>
 			);
 		} else {
 			return (
-					<div className={wrapperClass}>
-						<label htmlFor={name}>{label}{req}</label>
-						<Select id="multiSelect" name={name} defaultValue={defaultOption} isMulti onChange={(e) => inputChange(name,e)} options={options}/>
+				<View>
+						<Text>{label}{req}</Text>
+						<DropDownPicker 
+							open={open} 
+							value={value} 
+							items={items}
+							setOpen={setOpen}
+							setValue={setValue}
+							setItems={setItems}
+							theme={theme}
+							multiple={true}
+							mode="BADGE"
+							badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
+						/>
 						{errorFeedBack}
 						{errorLabel}
 						{warnFeedBack}
 						{warnLabel}
 						{successFeedBack}
 						{successLabel}
-					</div>
+				</View>
 				);
 		}
 	} else {
-		return (<div></div>);
+		return (<View><Text>Select issue contant admin</Text></View>);
 	}
 };
 

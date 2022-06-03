@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, TextInput } from "react-native";
+import {StyleSheet, Text, View, TextInput } from "react-native";
 
 const InputText = ({name, label, placeHolder, value, errors, warns, successes, inputType, min, max, rendered, required, inputChange, onBlur, wrapperClass, comment}) => {
 	
@@ -12,32 +12,32 @@ const InputText = ({name, label, placeHolder, value, errors, warns, successes, i
 		inputType = "text";
 	}
 	
-	let commentLabel = '';
+	let commentLabel = null;
 	if (comment != null && comment != "") {
-		commentLabel = comment;
+		commentLabel = <Text>{comment}</Text>;
 	}
 	
-	let errorLabel = '';
-	let errorFeedBack = '';
+	let errorLabel = null;
+	let errorFeedBack = null;
 	if (errors != null && errors[name] != null && errors[name] != "") {
 		wrapperClass += " " + 'has-error has-feedback';
-		errorFeedBack = <View/>;
-		errorLabel = <View >{errors[name]}</View>;
+		errorFeedBack = <Text/>;
+		errorLabel = <Text>{errors[name]}</Text>;
 	}
 	
-	let warnLabel = '';
-	let warnFeedBack = '';
+	let warnLabel = null;
+	let warnFeedBack = null;
 	if (warns != null && warns[name] != null && warns[name] != "") {
 		wrapperClass += " " + 'has-error has-feedback';
-		warnFeedBack = <View/>;
-		warnLabel = <View>{warns[name]}</View>;
+		warnFeedBack = <Text/>;
+		warnLabel = <Text>{warns[name]}</Text>;
 	}
 			
-	let successLabel = '';
-	let successFeedBack = '';
+	let successLabel = null;
+	let successFeedBack = null;
 	if (successes != null && successes[name] != null && successes[name] != "") {
 		wrapperClass += " " + 'has-success has-feedback';
-		successLabel = <View>{successes[name]}</View>;
+		successLabel = <Text>{successes[name]}</Text>;
 	}
 	
 	let req = "";
@@ -57,8 +57,8 @@ const InputText = ({name, label, placeHolder, value, errors, warns, successes, i
 	if (rendered) {
 		return (
 			<View>
-				<View >{label}{req}</View>
-				<TextInput autoComplete="new-password" autoCapitalize="off" onChangeText={inputChange} placeholder={placeHolder} value={value}/>
+				<Text style={styles.FieldText} >{label}{req}</Text>
+				<TextInput style={styles.FieldInput} autoComplete="off" autoCorrect={false} autoCapitalize="none" onChangeText={(e) => inputChange(e,name)} placeholder={placeHolder} value={value}/>
 				{commentLabel}
 				{errorFeedBack}
 				{errorLabel}
@@ -72,6 +72,21 @@ const InputText = ({name, label, placeHolder, value, errors, warns, successes, i
 		return (<View></View>);
 	}
 };
+
+const styles = StyleSheet.create({
+	FieldInput: {
+		height: 40,
+		width: 300,
+		paddingHorizontal: 5,
+    	marginBottom: 5,
+    	borderWidth: 1,
+		backgroundColor: '#FFF',
+    	padding: 10,
+	},
+	FieldText: {
+		color: '#FFF'
+	}
+});
 
 InputText.propTypes = {
 	name: PropTypes.string.isRequired,

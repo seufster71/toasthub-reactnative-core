@@ -31,7 +31,7 @@ function StatusView() {
 	let items = [];
 	if (itemState.error != null ) {
 		for (let i = 0; i < itemState.error.length; i++) {
-			items.push(<View>
+			items.push(<View key={'error'+i} >
 				<Text>Error:</Text>
 				<Text>{itemState.error[i].message}</Text>
 				</View>);
@@ -39,18 +39,18 @@ function StatusView() {
 	}
 	if (itemState.info != null) {
 		for (let i = 0; i < itemState.info.length; i++) {
-			items.push(<View><Text>
+			items.push(<View key={'info-'+i} ><Text>
 			{itemState.info[i].message}</Text></View>);
 		}
 	}
 	if (itemState.warn != null) {
 		for (let i = 0; i < itemState.warn.length; i++) {
-			items.push(<View><Text>
+			items.push(<View key={'warn-'+i} ><Text>
 			{itemState.warn[i].message}</Text></View>);
 		}
 	}
 	if (itemState.error != null || itemState.info != null || itemState.warn != null) {
-		setTimeout(() => {this.clearStatus()},5000);
+		setTimeout(() => {clearStatus()},5000);
 	}
 	
 	return (

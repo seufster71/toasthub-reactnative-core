@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import List from '../../coreView/common/list';
+import { FlatList, StyleSheet, Text, View, Pressable } from 'react-native';
 import ShowEntries from './show-entries';
 import OrderBy from './order-by';
 import SearchBy from './search-by';
@@ -146,21 +146,12 @@ const ListBuilder = ({header, itemState, columns, appPrefs, parent, onListLimitC
 	    	}
 	    	
 	    	
-	    	cells.push(
-	    		<div key={0} >
-		            <div className="row">
-		              <div className="col-md-4">
-		                {lines}
-		              </div>
-		            </div>
-		        </div>
-            );
 
-	    	listRows.push(<li key={itemState.items[i].id} className="list-group-item">{cells}</li>);
+	    	listRows.push({key:itemState.items[i].id});
 	    	
 	    }
   	} else {
-	    listRows.push(<li key="1"><div id={appPrefs.prefTexts.GLOBAL_PAGE.GLOBAL_PAGE_LIST_EMPTY.name}> {appPrefs.prefTexts.GLOBAL_PAGE.GLOBAL_PAGE_LIST_EMPTY.value}</div></li>);
+	    listRows.push({key:appPrefs.prefTexts.GLOBAL_PAGE.GLOBAL_PAGE_LIST_EMPTY.value});
   	}
 	
 	let classListGroup = "list-group list-unstyled";	
@@ -169,31 +160,31 @@ const ListBuilder = ({header, itemState, columns, appPrefs, parent, onListLimitC
 	}
 	
 	return (
-		<div className="col-md-12 col-sm-12 col-xs-12">
-        	<div className="x_panel">
-        		<div className="x_title">
-        			{header}
-        			<ul className="navbar-right panel_toolbox">
-        				 <li><i className="fa fa-plus" title="Add" onClick={() => onOption("MODIFY")}/></li>;
-        			</ul>
-          		</div>
-          		<div className="x_content">
-	          		<div className="row">
-	          			<ShowEntries name={itemState.pageName+"-LISTLIMIT"} appPrefs={appPrefs} listLimit={itemState.listLimit} onListLimitChange={onListLimitChange}/>
-	          			<OrderBy itemState={itemState} name={itemState.pageName+"-ORDERBY"} appPrefs={appPrefs} columns={columns} parent={parent} onOrderBy={onOrderBy}/>
-						<SearchBy itemState={itemState} name={itemState.pageName+"-SEARCHBY"} appPrefs={appPrefs} columns={columns} parent={parent} onSearchClick={onSearchClick}/>
-	          			<Search name={itemState.pageName+"-SEARCH"} onChange={onSearchChange} onClick={onSearchClick} />
-	          		</div>
-	          		<br/>
-	            	<ul className={classListGroup}>
-	              		{listRows}
-	            	</ul>
-	            	<Pagination currentSegment={itemState[itemState.pageName+"_PAGINATION"]} appPrefs={appPrefs} itemCount={itemState.itemCount} listStart={itemState.listStart} listLimit={itemState.listLimit} onClick={onPaginationClick}/>
-	          	</div>
-        	</div>
-      	</div>
+		<View style={styles.container}>
+        	<View>
+        		<Text>{header}</Text>
+			</View>
+			<View>
+				<FlatList
+	              	data={listRows}
+					renderItem = {({item}) => <Text style={styles.item}>{item.key}</Text>}
+				/>
+        	</View>
+      	</View>
 	);
 };
+
+const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   paddingTop: 22
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+});
 
 ListBuilder.propTypes = {
 	itemState: PropTypes.object.isRequired,

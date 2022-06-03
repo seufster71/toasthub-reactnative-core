@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Animated } from 'react-native';
 import Icon from 'react-native-ico-material-design';
 import utils from '../../core/common/utils';
 
 var iconHeight = 26;
 var iconWidth = 26;
 
-export default function NavigationView({menus,appPrefs,permissions,activeTab,changeTab,backToTab,headerToolTip,user,profileMenu}) {
-
+export default function NavigationView({menus,appPrefs,permissions,activeTab,changeTab,backToTab,headerToolTip,user,profileMenu,navigate}) {
+	
+	const fadeAnim = useRef(new Animated.Value(0)).current;
+	
     let items = [];
     let topMenus = menus;
 
@@ -47,11 +49,35 @@ export default function NavigationView({menus,appPrefs,permissions,activeTab,cha
       </Navbar>
     ); */
 
+	const openDrawer = () => {
+		Animated.timing(
+			fadeAnim,
+			{ toValue: 1, duration: 100, useNativeDriver: true }
+		).start();
+	}
+	
+	const closeDrawer = () => {
+		Animated.timing(
+			fadeAnim,
+			{ toValue: 0, duration: 100, useNativeDriver: true }
+		).start();
+	}
+
 	return (
-		<View>
-			<Text>Nav</Text>
-			<Icon name="add-plus-button" height="40" width="40" />
-		</View>
+	<View style={styles.NavContainer}>
+		<Pressable onPress={() => navigate("/services")} style={styles.IconBehave} android_ripple={{borderless:true, radius:50}} >
+			<Icon name="car-directions" height={iconHeight} width={iconWidth} />
+		</Pressable>
+		<Pressable onPress={() => navigate("/")} style={styles.IconBehave} android_ripple={{borderless:true, radius:50}} >
+			<Icon name="chat-bubble" height={iconHeight} width={iconWidth} />
+		</Pressable>
+		<Pressable onPress={() => navigate("/about")} style={styles.IconBehave} android_ripple={{borderless:true, radius:50}} >
+			<Icon name="add-alarm-button" height={iconHeight} width={iconWidth} />
+		</Pressable>
+		<Pressable onPress={() => openDrawer()} style={styles.IconBehave} android_ripple={{borderless:true, radius:50}} >
+			<Icon name="menu-button" height={iconHeight} width={iconWidth} />
+		</Pressable>
+	</View>
 	);
 }
 
@@ -127,6 +153,15 @@ const buildMenu = (items,menus,permissions,user,activeTab) => {
 	return items;
 }
         
+const styles = StyleSheet.create({
+	NavContainer: {
+		top:20,
+	},
+	
+	IconBehave: {
+		padding: 14
+	}
+});
         
   NavigationView.propTypes = {
     appPrefs: PropTypes.object,

@@ -15,11 +15,12 @@
  */
 'use-strict';
 import React from 'react';
+import { View, Text} from 'react-native';
 
 function LoadingView() {
     
       return (
-        <View> Loading.... </View>
+        <View><Text> Loading.... </Text></View>
       );
 
 }
