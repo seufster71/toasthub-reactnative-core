@@ -45,7 +45,7 @@ const buildMenu = (items,menus,permissions,user,activeTab,navigate) => {
         }
         if (menus[m].values[0].rendered) {
           
-			fuLogger.log({level:'TRACE',loc:'NavigationBarView::buildMenu::menus',msg:JSON.stringify(menus[m])});
+		//	fuLogger.log({level:'TRACE',loc:'NavigationBarView::buildMenu::menus',msg:JSON.stringify(menus[m])});
 			
 	    	let image = "";
 	  		if (menus[m].values[0].iconNative != null) {
@@ -65,10 +65,10 @@ const buildMenu = (items,menus,permissions,user,activeTab,navigate) => {
 	      	}
 			let route = menus[m].values[0].routeNative;
 			let pressableStyle = [styles.IconBehave];
-			if (activeTab == menus[m].values[0].routeNative) {
+			if (activeTab.startsWith(menus[m].values[0].routeNative)) {
 				pressableStyle.push(styles.IconActive);
 			}
-			fuLogger.log({level:'TRACE',loc:'NavigationBarView::buildMenu::activeTab',msg:activeTab+" "+menus[m].values[0].routeNative});
+		//	fuLogger.log({level:'TRACE',loc:'NavigationBarView::buildMenu::activeTab',msg:activeTab+" "+menus[m].values[0].routeNative});
 	        items.push(
 				<Pressable key={menus[m].menuId} onPress={() => navigate(route)} style={pressableStyle} android_ripple={{borderless:true, radius:50}} >
 					<Icon name={image} height={iconHeight} width={iconWidth} />
